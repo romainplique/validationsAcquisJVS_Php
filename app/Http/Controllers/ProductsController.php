@@ -28,15 +28,15 @@ class ProductsController extends Controller
     public function createProduct(Request $request)
     {
         $body = $request->all();
-        Product::create($body);
-        return response()->json(null, 201);
+        $newProduct = Product::create($body);
+        return response()->json($newProduct, 201);
     }
 
     public function updateProduct($idProduct, Request $request)
     {
-        $user = Product::findOrFail($idProduct);
-        $user->fill($request->all());
-        return $user->update();
+        $product = Product::findOrFail($idProduct);
+        $product->fill($request->all());
+        return $product->update();
     }
 
     public function deleteProduct($idProduct)
