@@ -17,7 +17,7 @@ class ProductsController extends Controller
     /// ******************************** CREATE, READ, UPDATE, DELETE ********************************
     public function allProducts()
     {
-        return Product::paginate(15);
+        return Product::all();
     }
 
     public function getProduct($idProduct)

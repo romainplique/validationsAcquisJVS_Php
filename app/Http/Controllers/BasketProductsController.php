@@ -14,7 +14,7 @@ class BasketProductsController extends Controller
      */
     public function __construct(){}
 
-    /// ******************************** CREATE, READ, UPDATE, DELETE ********************************
+    /// ******************************** GET *********************************************************
     public function allBasketProducts()
     {
         return BasketProducts::all();
@@ -33,8 +33,7 @@ class BasketProductsController extends Controller
             ->first()->update(['quantity' => $productInBasket->quantity + $quantityNewProduit]);
         }else{
             // Sinon on crée l'enregistrement avec la quantité reçue
-            $body = $request->all();
-            return BasketProducts::create($body);
+            return BasketProducts::create($idNewProduit, $quantityNewProduit);
         }
     }
 
