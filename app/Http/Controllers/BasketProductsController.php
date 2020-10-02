@@ -22,32 +22,24 @@ class BasketProductsController extends Controller
 
     /// ******************************** ADD, REMOVE *************************************************
     public function addProductToBasket(Request $request){
-        // On récupère les paramètres de la requête
-        $idNewProduit = $request->input('idProduct');
-        $quantityNewProduit = $request->input('quantity');
-        // On regarde si on a déjà le produit dans le panier
-        $productInBasket = BasketProducts::where('idProduct', $idNewProduit)->first();
-        // Si c'est le cas alors on incrémente sa quantité
-        if($productInBasket){            
-            return BasketProducts::where('idProduct', $idNewProduit)
-            ->first()->update(['quantity' => $productInBasket->quantity + $quantityNewProduit]);
-        }else{
-            // Sinon on crée l'enregistrement avec la quantité reçue
-            return BasketProducts::create($idNewProduit, $quantityNewProduit);
-        }
+        // On crée l'enregistrement avec la quantité reçue
+        $body = $request->all();
+        return BasketProducts::create($body, 201);
     }
 
-    public function removeProductFromBasket($idProduct){
-        // On récupère le produit dans le panier
-        $productInBasket = BasketProducts::where('idProduct', $idProduct)->first();
-        // S'il a une quantité égale à 1 alors on le supprime
-        if($productInBasket->quantity == 1){
-            return BasketProducts::where('idProduct', $idProduct)
-            ->first()->delete();
-        }else{
-            // Sinon on décrémente la quantité
-            return BasketProducts::where('idProduct', $idProduct)
-            ->first()->update(['quantity' => $productInBasket->quantity-1]);  
-        }
+    public function removeProductFromBasket($idBasketProduct){
+        // On essaye de récupérer la ligne dans le panier
+        $basketProduct = BasketProducts::findOrFail($idBasketProduct);
+        $basketProduct->delete();        
+        return response()->json($basketProduct, 200);
     }
+
+    /// ******************************** UPDATE ******************************************************
+    public function updateProductQuantity($idBasketProduct, Request $request){
+        $basketProduct = BasketProducts::findOrFail($idBasketProduct);
+        $basketProduct->fill($request->all());
+        $basketProduct->update();
+        return response()->json($basketProduct, 200);
+    }
+
 }

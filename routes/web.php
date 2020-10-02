@@ -23,4 +23,5 @@ $router->delete('/api/products/{idProduct}', [ 'uses' => 'ProductsController@del
 
 $router->get('/api/basketproducts', [ 'uses' => 'BasketProductsController@allBasketProducts']);
 $router->post('/api/basketproducts', [ 'uses' => 'BasketProductsController@addProductToBasket']);
-$router->delete('/api/basketproducts/{idProduct}', [ 'uses' => 'BasketProductsController@removeProductFromBasket']);
+$router->delete('/api/basketproducts/{idBasketProduct}', [ 'uses' => 'BasketProductsController@removeProductFromBasket']);
+$router->patch('/api/basketproducts/{idBasketProduct}', [ 'uses' => 'BasketProductsController@updateProductQuantity']);
